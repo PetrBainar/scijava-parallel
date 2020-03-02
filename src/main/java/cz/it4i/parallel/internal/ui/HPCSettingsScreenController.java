@@ -9,6 +9,7 @@ import cz.it4i.parallel.paradigm_managers.HPCSettings;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import cz.it4i.swing_javafx_ui.SimpleDialog;
 import cz.vsb.vas0166.remotefilebrowser.RemoteFileChooserComponent;
+import cz.vsb.vas0166.remotefilebrowser.RemoteFile.FileType;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -130,11 +131,10 @@ public class HPCSettingsScreenController extends AnchorPane {
 		authenticationChoiceKeyRadioButton.selectedProperty().addListener((
 			ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 			Boolean isNowSelected) -> disableIrrelevantFileds(isNowSelected));
-
+		remoteDirectory.setOutput(FileType.FOLDER);
 		remoteDirectory.setConnectionParameters(() -> "ssh://" + hostTextField
 			.getText(), userNameTextField::getText, keyFileTextField::getText,
 			this::getPassword);
-
 	}
 
 	public void disableIrrelevantFileds(Boolean isSelected) {
