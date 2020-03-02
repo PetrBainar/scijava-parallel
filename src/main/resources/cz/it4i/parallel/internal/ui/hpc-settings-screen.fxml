@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import cz.vsb.vas0166.remotefilebrowser.*?>
 
 <fx:root minHeight="599.0" minWidth="500.0" prefHeight="599.0" prefWidth="720.0" stylesheets="@style.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.it4i.parallel.internal.ui.HPCSettingsScreenController">
    <children>
@@ -117,7 +118,8 @@
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding></Label>
-            <TextField fx:id="remoteDirectoryTextField" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="10" />
+            <!-- TextField fx:id="remoteDirectoryTextField" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="10" / -->
+            <RemoteFileChooserComponent fx:id="remoteDirectory" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="10"/>
             <Label text="Remote ImageJ command" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -8,6 +8,7 @@ import cz.it4i.parallel.paradigm_managers.AuthenticationChoice;
 import cz.it4i.parallel.paradigm_managers.HPCSettings;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import cz.it4i.swing_javafx_ui.SimpleDialog;
+import cz.vsb.vas0166.remotefilebrowser.RemoteFileChooserComponent;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -57,8 +58,11 @@ public class HPCSettingsScreenController extends AnchorPane {
 	@FXML
 	private ComboBox<String> schedulerTypeComboBox;
 
+	/*@FXML
+	private TextField remoteDirectoryTextField;*/
+
 	@FXML
-	private TextField remoteDirectoryTextField;
+	private RemoteFileChooserComponent remoteDirectory;
 
 	@FXML
 	private TextField commandTextField;
@@ -126,6 +130,11 @@ public class HPCSettingsScreenController extends AnchorPane {
 		authenticationChoiceKeyRadioButton.selectedProperty().addListener((
 			ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 			Boolean isNowSelected) -> disableIrrelevantFileds(isNowSelected));
+
+		remoteDirectory.setConnectionParameters(() -> "ssh://" + hostTextField
+			.getText(), userNameTextField::getText, keyFileTextField::getText,
+			this::getPassword);
+
 	}
 
 	public void disableIrrelevantFileds(Boolean isSelected) {
@@ -188,7 +197,7 @@ public class HPCSettingsScreenController extends AnchorPane {
 		password = passwordPasswordField.getText();
 		keyFile = new File(keyFileTextField.getText());
 		keyFilePassword = keyFilePasswordPasswordField.getText();
-		remoteDirectory = remoteDirectoryTextField.getText();
+		remoteDirectory = this.remoteDirectory.getPath();
 		command = commandTextField.getText();
 		commitSpinnerValue(nodesSpinner);
 		nodes = nodesSpinner.getValue();
@@ -220,6 +229,13 @@ public class HPCSettingsScreenController extends AnchorPane {
 		}
 	}
 
+	private String getPassword() {
+		if (authenticationChoiceKeyRadioButton.isSelected()) {
+			return keyFilePasswordPasswordField.getText();
+		}
+		return passwordPasswordField.getText();
+	}
+
 	public void setInitialFormValues(HPCSettings oldSettings) {
 		if (oldSettings == null) {
 			hostTextField.setText("localhost");
@@ -247,7 +263,7 @@ public class HPCSettingsScreenController extends AnchorPane {
 			passwordPasswordField.setText(oldSettings.getPassword());
 			schedulerTypeComboBox.getSelectionModel().select(oldSettings
 				.getAdapterType().toString());
-			remoteDirectoryTextField.setText(oldSettings.getRemoteDirectory());
+			remoteDirectory.setPath(oldSettings.getRemoteDirectory());
 			commandTextField.setText(oldSettings.getCommand());
 			nodesSpinner.getValueFactory().setValue(oldSettings.getNodes());
 			ncpusSpinner.getValueFactory().setValue(oldSettings.getNcpus());

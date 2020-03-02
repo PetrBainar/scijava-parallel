@@ -92,7 +92,7 @@
 	</properties>
 
 	<repositories>
-		<repository>
+		<repository> 
 			<id>it4i</id>
 			<url>https://artifactory.cs.vsb.cz/it4i/</url>
 		</repository>
@@ -152,6 +152,11 @@
 			<groupId>cz.it4i.fiji</groupId>
 			<artifactId>scp-java-client</artifactId>
 			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>cz.vsb.vas0166</groupId>
+			<artifactId>remote-file-browser</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
