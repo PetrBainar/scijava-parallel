@@ -66,7 +66,7 @@ public class HPCSettingsScreenController extends AnchorPane {
 	private RemoteFileChooserComponent remoteDirectory;
 
 	@FXML
-	private TextField commandTextField;
+	private RemoteFileChooserComponent commandFileChooser;
 
 	@FXML
 	private Spinner<Integer> nodesSpinner;
@@ -135,6 +135,13 @@ public class HPCSettingsScreenController extends AnchorPane {
 		remoteDirectory.setConnectionParameters(() -> "ssh://" + hostTextField
 			.getText(), userNameTextField::getText, keyFileTextField::getText,
 			this::getPassword);
+		remoteDirectory.setOnReturnedPathHandler(x -> remoteDirectoryChanged());
+
+		commandFileChooser.setOutput(FileType.FILE);
+		commandFileChooser.setConnectionParameters(() -> "ssh://" + hostTextField
+			.getText(), userNameTextField::getText, keyFileTextField::getText,
+			this::getPassword);
+
 	}
 
 	public void disableIrrelevantFileds(Boolean isSelected) {
@@ -198,7 +205,7 @@ public class HPCSettingsScreenController extends AnchorPane {
 		keyFile = new File(keyFileTextField.getText());
 		keyFilePassword = keyFilePasswordPasswordField.getText();
 		remoteDirectory = this.remoteDirectory.getPath();
-		command = commandTextField.getText();
+		command = commandFileChooser.getPath();
 		commitSpinnerValue(nodesSpinner);
 		nodes = nodesSpinner.getValue();
 		commitSpinnerValue(ncpusSpinner);
@@ -236,6 +243,11 @@ public class HPCSettingsScreenController extends AnchorPane {
 		return passwordPasswordField.getText();
 	}
 
+	private void remoteDirectoryChanged() {
+		commandFileChooser.setBasePath(remoteDirectory.getPath());
+		commandFileChooser.setPath("");
+	}
+
 	public void setInitialFormValues(HPCSettings oldSettings) {
 		if (oldSettings == null) {
 			hostTextField.setText("localhost");
@@ -264,7 +276,8 @@ public class HPCSettingsScreenController extends AnchorPane {
 			schedulerTypeComboBox.getSelectionModel().select(oldSettings
 				.getAdapterType().toString());
 			remoteDirectory.setPath(oldSettings.getRemoteDirectory());
-			commandTextField.setText(oldSettings.getCommand());
+			commandFileChooser.setBasePath(remoteDirectory.getPath());
+			commandFileChooser.setPath(oldSettings.getCommand());
 			nodesSpinner.getValueFactory().setValue(oldSettings.getNodes());
 			ncpusSpinner.getValueFactory().setValue(oldSettings.getNcpus());
 			shutdownJobAfterCloseCheckBox.setSelected(oldSettings
